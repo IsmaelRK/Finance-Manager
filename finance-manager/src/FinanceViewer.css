@@ -1,0 +1,35 @@
+.finance-tracker {
+    font-family: Arial, sans-serif;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.finance-tracker div {
+    margin-bottom: 10px;
+}
+
+.finance-tracker label {
+    margin-right: 5px;
+}
+
+.finance-tracker input[type='number'],
+.finance-tracker select {
+    margin-right: 10px;
+}
+
+.finance-tracker ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.finance-tracker li {
+    margin-bottom: 5px;
+}
+
+.received {
+    color: green;
+}
+
+.spent {
+    color: red;
+}
