@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
 
-const db = new sqlite3.Database(':memory')
+const db = new sqlite3.Database('database_sqlite')
 db.serialize(() => {
   db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, value REAL)')
 
