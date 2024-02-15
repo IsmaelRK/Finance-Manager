@@ -119,17 +119,26 @@ function FinanceViewer() {
 
     return (
         <div className="Finance-Viewer">
-            <h2>Finance Viewer</h2>
+            <h1 className="white-font" id="main-title">Finance Viewer</h1>
 
-            <label htmlFor="totalInput">Total:</label>
-            <input
-                type="number"
-                id="totalInput"
-                value={total}
-                onChange={totalBalanceUpdate}
-            />
-            <p>Total: {total}</p>
-            <p>Current Balance: {currentBalance}</p>
+            <label className="white-font" htmlFor="totalInput">Total Monthly Income</label>
+            <br/>
+
+            <div id="monthly-income">
+                <span className="currency-symbol">$</span>
+                <input
+                    type="number"
+                    id="totalInput"
+                    value={total}
+                    onChange={totalBalanceUpdate}
+                />
+            </div>
+
+
+            <div id="balance-div">
+                <p className="white-font">Current Balance</p>
+                <p>{currentBalance}</p>
+            </div>
 
             <div>
                 <select value={inputType} onChange={handleTypeChange}>
