@@ -1,17 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import './FinanceViewer.css'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import './FinanceViewer.css';
 
 function FinanceViewer() {
+    // eslint-disable-next-line
     const [total, setTotal] = useState(0);
-    const [currentBalance, setCurrentBalance] = useState(total)
+    const [currentBalance, setCurrentBalance] = useState(0);
+
+    useEffect(() => {
+        setCurrentBalance(total);
+    }, [total]);
 
     const totalBalanceUpdate = (event) => {
-        const newValue = parseFloat(event.target.value)
+        const newValue = parseFloat(event.target.value);
 
-        axios.post('http://localhost:3001/update-total', {total: newValue})
+        fetch('http://localhost:3001/update-total', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({total: newValue}),
+        })
             .then(response => {
-                console.log(response.data)
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar valor para o servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
             })
             .catch(error => {
                 console.error('Erro ao enviar valor para o servidor:', error);
@@ -23,8 +39,14 @@ function FinanceViewer() {
             <h2>Finance Viewer</h2>
 
             <label htmlFor="totalInput">Total:</label>
-            <input type="number" id="totalInput" value={total} onChange={totalBalanceUpdate}/>
+            <input
+                type="number"
+                id="totalInput"
+                onChange={totalBalanceUpdate}
+            />
             <p id="currentBalance">{currentBalance}</p>
+
+
 
         </div>
     );
