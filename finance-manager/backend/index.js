@@ -12,32 +12,86 @@ app.use(bodyParser.json())
 const db = new sqlite3.Database(':memory')
 db.serialize(() => {
   db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, value REAL)')
+
+  db.run('CREATE TABLE IF NOT EXISTS current_balance (id INTEGER PRIMARY KEY, subtotal REAL)')
+  db.get('SELECT * from current_balance', function (error, row) {
+    if (error) {
+      console.error("Error", error.message)
+    }
+    else {
+      if (!row) {
+        db.run('INSERT INTO current_balance (subtotal) VALUES (0)', function (error) {
+          if (error) {
+            console.error("Error", error.message)
+          }
+          else {
+            console.log("Success")
+          }
+        })
+      }
+    }
+  })
+
   db.run('CREATE TABLE IF NOT EXISTS balance (id INTEGER PRIMARY KEY, total REAL)')
+  db.get('SELECT * from balance', function (error, row) {
 
-  try {
-    db.get('SELECT * from balance', function (error, row) {
+    if (error) {
+      console.error("Error", error.message)
+    }
+    else {
+      if (!row) {
+        db.run('INSERT INTO balance (total) VALUES (0)', function (error) {
+          if (error) {
+            console.error("Error", error.message)
+          }
+          else {
+            console.log("Success")
+          }
+        })
+      }
+    }
+  })
 
-      if (error) {
-        console.error("Error", error.message)
-      }
-      else {
-        if (!row) {
-          db.run('INSERT INTO balance (total) VALUES (0)', function (error) {
-            if (error) {
-              console.error("Error", error.message)
-            }
-            else {
-              console.log("Success")
-            }
-          })
-        }
-      }
-    })
-  }
-  catch (error) {
-    console.log("Error")
-  }
 })
+
+function calculateSubtotal() {
+
+  const totalGetQuery = 'SELECT total from balance WHERE id = 1'
+  const transactionsGetQuery = 'SELECT * from transactions'
+  const updateSubtotalQuery = 'UPDATE current_balance SET subtotal = ? WHERE id = 1'
+
+  db.get(totalGetQuery, (err, total) => {
+    if (!err) {
+
+      db.all(transactionsGetQuery, (err, transactions) => {
+
+        let subtotal = total.total
+        transactions.forEach(transaction => {
+
+          if (transaction.type === 'received') {
+            subtotal += transaction.value
+          } else {
+            subtotal -= transaction.value
+          }
+
+        })
+
+        db.run(updateSubtotalQuery, [subtotal], (err) => {
+
+          if (err) {
+            console.error("Error updating subtotal")
+          }
+
+        })
+
+      })
+
+    } else {
+      console.error("Error getting total")
+    }
+  })
+}
+
 
 app.post('/update-total', (req, res) => {
 
@@ -50,6 +104,7 @@ app.post('/update-total', (req, res) => {
       res.status(500).json({ error: 'Error updating total value in balance table' })
     }
     else {
+      calculateSubtotal()
       res.json({ message: 'Total value updated successfully in balance table' })
       console.log('Total value updated successfully in balance table.')
 
@@ -76,6 +131,8 @@ app.post('/transactions', (req, res) => {
     if (err) {
       return res.status(500).json({ error: err.message })
     }
+
+    calculateSubtotal()
     res.json({
       id: this.lastID,
       type,
@@ -99,6 +156,7 @@ app.delete('/transactions/:id', (req, res) => {
     if (err) {
       return res.status(500).json({ error: err.message })
     }
+    calculateSubtotal()
     res.json({ message: `Transaction ${id} deleted successfully` })
   })
 })
