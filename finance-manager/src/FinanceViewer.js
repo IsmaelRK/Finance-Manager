@@ -192,11 +192,11 @@ function FinanceViewer() {
 
             <div id="balance-div">
                 <p className="white-font">Current Balance</p>
-                <p>{currentBalance}</p>
+                <p id="current-balance-p" className={currentBalance > 0 ? 'green-color' : 'red-color'}>$  {currentBalance}</p>
             </div>
 
             <div>
-                <select value={inputType} onChange={handleTypeChange}>
+                <select id="main-select" className={inputType === 'received' ? 'green-color' : 'red-color'} value={inputType} onChange={handleTypeChange}>
                     <option value="received">Received</option>
                     <option value="spent">Spent</option>
                 </select>
@@ -210,7 +210,7 @@ function FinanceViewer() {
             <ul>
                 {transactions.map((transaction, index) => (
                     <li key={index}>
-                        <select id="transaction-type" value={transaction.type} onChange={(e) => handleTransactionChanges(e, index, transaction.id)}>
+                        <select id="transaction-type" className={transaction.type === 'received' ? 'green-color' : 'red-color'} value={transaction.type} onChange={(e) => handleTransactionChanges(e, index, transaction.id)}>
                             <option value="received">Received</option>
                             <option value="spent">Spent</option>
                         </select>

@@ -31,11 +31,27 @@ html {
     align-items: center;
     margin: 2rem 0 1rem 0;
 
+    height: 4rem;
+    width: 9rem;
+
+    background-color: #000000B5;
+    border-radius: 8px;
+
 }
 #balance-div > p{
+    margin: 0.2rem 0 0.5rem 0;
+}
+
+#current-balance-p {
     margin: 0 0 1rem 0;
 }
 
+#main-select {
+    border: none;
+    border-bottom: 1px solid;
+
+    background-color: #131e28;
+}
 
 .Finance-Viewer {
     display: flex;
@@ -51,4 +67,14 @@ html {
 .currency-symbol {
 
     color: #51bc3d;
+}
+
+.green-color{
+    color: #51bc3d;
+    border-color: #51bc3d;
+}
+
+.red-color{
+    color: #E15050FF;
+    border-color: #E15050FF;
 }
