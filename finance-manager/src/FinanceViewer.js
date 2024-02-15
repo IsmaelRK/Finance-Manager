@@ -1,44 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import './FinanceViewer.css';
+import React, { useState, useEffect } from 'react'
+import './FinanceViewer.css'
 
 function FinanceViewer() {
-    const [total, setTotal] = useState(0);
-    const [currentBalance, setCurrentBalance] = useState(0);
+    const [total, setTotal] = useState(0)
+    const [currentBalance, setCurrentBalance] = useState(0)
 
-    const [transactions, setTransactions] = useState([]);
-    const [inputType, setInputType] = useState('received');
-    const [inputValueReceived, setInputValueReceived] = useState('');
-    const [inputValueSpent, setInputValueSpent] = useState('');
-
+    const [transactions, setTransactions] = useState([])
+    const [inputType, setInputType] = useState('received')
+    const [inputValueReceived, setInputValueReceived] = useState('')
+    const [inputValueSpent, setInputValueSpent] = useState('')
 
     const fetchTotal = () => {
         fetch('http://localhost:3001/get-total')
             .then(response => response.json())
             .then(data => {
-                setTotal(data.total);
-                setInputValueReceived('');
-                setInputValueSpent('');
-                setCurrentBalance(data.total);
+                setTotal(data.total)
+                setInputValueReceived('')
+                setInputValueSpent('')
             })
-            .catch(error => console.error('Erro ao buscar total:', error));
-    };
+            .catch(error => console.error('Error fetching total:', error))
+    }
 
     const fetchTransactions = () => {
         fetch('http://localhost:3001/transactions')
             .then(response => response.json())
-            .then(data => setTransactions(data))
-            .catch(error => console.error('Erro ao buscar transações:', error));
-    };
+            .then(data => {
+                setTransactions(data)
+                let balance = total
+                data.forEach(transaction => {
+                    if (transaction.type === 'received') {
+                        balance += transaction.value
+                    } else {
+                        balance -= transaction.value
+                    }
+                })
+                setCurrentBalance(balance)
+            })
+            .catch(error => console.error('Error fetching transactions:', error))
+    }
 
     useEffect(() => {
-        fetchTotal();
-        fetchTransactions();
-    }, []);
+        fetchTotal()
+        fetchTransactions()
+    }, [total, currentBalance])
 
     const totalBalanceUpdate = (event) => {
-        const newValue = parseFloat(event.target.value);
-        setTotal(newValue);
-        setCurrentBalance(newValue);
+        const newValue = parseFloat(event.target.value)
+        setTotal(newValue)
         fetch('http://localhost:3001/update-total', {
             method: 'POST',
             headers: {
@@ -48,32 +56,33 @@ function FinanceViewer() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Erro ao enviar valor para o servidor');
+                    throw new Error('Error sending value to server')
                 }
-                return response.json();
+                return response.json()
             })
             .then(data => {
-                console.log(data);
+                console.log(data)
+                fetchTransactions()
             })
             .catch(error => {
-                console.error('Erro ao enviar valor para o servidor:', error);
-            });
-    };
+                console.error('Error sending value to server:', error)
+            })
+    }
 
     const handleInputChangeReceived = (event) => {
-        setInputValueReceived(event.target.value);
-    };
+        setInputValueReceived(event.target.value)
+    }
 
     const handleInputChangeSpent = (event) => {
-        setInputValueSpent(event.target.value);
-    };
+        setInputValueSpent(event.target.value)
+    }
 
     const handleTypeChange = (event) => {
-        setInputType(event.target.value);
-    };
+        setInputType(event.target.value)
+    }
 
     const handleAddTransaction = () => {
-        const inputValue = inputType === 'received' ? inputValueReceived : inputValueSpent;
+        const inputValue = inputType === 'received' ? inputValueReceived : inputValueSpent
         fetch('http://localhost:3001/transactions', {
             method: 'POST',
             headers: {
@@ -86,17 +95,14 @@ function FinanceViewer() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Erro ao adicionar transação');
+                    throw new Error('Error adding transaction')
                 }
-                if (inputType === 'received') {
-                    setInputValueReceived('');
-                } else {
-                    setInputValueSpent('');
-                }
-                fetchTransactions();
+                setInputValueReceived('')
+                setInputValueSpent('')
+                fetchTransactions()
             })
-            .catch(error => console.error('Erro ao adicionar transação:', error));
-    };
+            .catch(error => console.error('Error adding transaction:', error))
+    }
 
     const handleDeleteTransaction = (id) => {
         fetch(`http://localhost:3001/transactions/${id}`, {
@@ -104,12 +110,12 @@ function FinanceViewer() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Erro ao excluir transação');
+                    throw new Error('Error deleting transaction')
                 }
-                fetchTransactions();
+                fetchTransactions()
             })
-            .catch(error => console.error('Erro ao excluir transação:', error));
-    };
+            .catch(error => console.error('Error deleting transaction:', error))
+    }
 
     return (
         <div className="Finance-Viewer">
@@ -122,31 +128,32 @@ function FinanceViewer() {
                 value={total}
                 onChange={totalBalanceUpdate}
             />
-            <p id="currentBalance">{currentBalance}</p>
+            <p>Total: {total}</p>
+            <p>Current Balance: {currentBalance}</p>
 
             <div>
                 <select value={inputType} onChange={handleTypeChange}>
-                    <option value="received">Recebido</option>
-                    <option value="spent">Gasto</option>
+                    <option value="received">Received</option>
+                    <option value="spent">Spent</option>
                 </select>
                 <input
                     type="number"
                     value={inputType === 'received' ? inputValueReceived : inputValueSpent}
                     onChange={inputType === 'received' ? handleInputChangeReceived : handleInputChangeSpent}
                 />
-                <button onClick={handleAddTransaction}>Adicionar</button>
+                <button onClick={handleAddTransaction}>Add</button>
             </div>
             <ul>
                 {transactions.map((transaction, index) => (
                     <li key={index}>
-                        {transaction.type === 'received' ? 'Recebido' : 'Gasto'}: {transaction.value}
-                        <button onClick={() => handleDeleteTransaction(transaction.id)}>Deletar</button>
+                        {transaction.type === 'received' ? 'Received' : 'Spent'}: {transaction.value}
+                        <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
 
         </div>
-    );
+    )
 }
 
-export default FinanceViewer;
+export default FinanceViewer

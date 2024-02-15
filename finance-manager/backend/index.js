@@ -1,19 +1,18 @@
-const express = require('express');
+const express = require('express')
 const cors = require('cors')
 const sqlite3 = require('sqlite3').verbose()
-const bodyParser = require('body-parser');
-const app = express();
-const port = 3001;
+const bodyParser = require('body-parser')
+const app = express()
+const port = 3001
 
 app.use(cors())
 app.use(express.json())
-app.use(bodyParser.json());
-
+app.use(bodyParser.json())
 
 const db = new sqlite3.Database(':memory')
 db.serialize(() => {
-  db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, value REAL)');
-  db.run('CREATE TABLE IF NOT EXISTS balance (id INTEGER PRIMARY KEY, total REAL);');
+  db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, value REAL)')
+  db.run('CREATE TABLE IF NOT EXISTS balance (id INTEGER PRIMARY KEY, total REAL)')
 
   try {
     db.get('SELECT * from balance', function (error, row) {
@@ -34,13 +33,10 @@ db.serialize(() => {
         }
       }
     })
-
-
   }
   catch (error) {
     console.log("Error")
   }
-
 })
 
 app.post('/update-total', (req, res) => {
@@ -50,12 +46,12 @@ app.post('/update-total', (req, res) => {
   db.run(totalUpdateQuery, [newTotal], function (error) {
 
     if (error) {
-      console.error('Erro ao atualizar valor total na tabela balance:', error.message);
-      res.status(500).json({ error: 'Erro ao atualizar valor total na tabela balance' });
+      console.error('Error updating total value in balance table:', error.message)
+      res.status(500).json({ error: 'Error updating total value in balance table' })
     }
     else {
-      res.json({ message: 'Valor total atualizado com sucesso na tabela balance' });
-      console.log('Valor total atualizado com sucesso na tabela balance.');
+      res.json({ message: 'Total value updated successfully in balance table' })
+      console.log('Total value updated successfully in balance table.')
 
     }
 
@@ -67,7 +63,7 @@ app.get('/get-total', (req, res) => {
   const getTotalQuery = 'SELECT total FROM balance WHERE id = 1'
   db.get(getTotalQuery, function (err, total) {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: err.message })
     }
     res.json(total)
   })
@@ -75,39 +71,39 @@ app.get('/get-total', (req, res) => {
 })
 
 app.post('/transactions', (req, res) => {
-  const { type, value } = req.body;
+  const { type, value } = req.body
   db.run("INSERT INTO transactions (type, value) VALUES (?, ?)", [type, value], function(err) {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: err.message })
     }
     res.json({
       id: this.lastID,
       type,
       value
-    });
-  });
-});
+    })
+  })
+})
 
 app.get('/transactions', (req, res) => {
   db.all("SELECT * FROM transactions", (err, rows) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: err.message })
     }
-    res.json(rows);
-  });
-});
+    res.json(rows)
+  })
+})
 
 app.delete('/transactions/:id', (req, res) => {
-  const id = req.params.id;
+  const id = req.params.id
   db.run("DELETE FROM transactions WHERE id = ?", id, function(err) {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: err.message })
     }
-    res.json({ message: `Transação ${id} deletada com sucesso` });
-  });
-});
+    res.json({ message: `Transaction ${id} deleted successfully` })
+  })
+})
 
 
 app.listen(port, () => {
-  console.log(`Server is running http://localhost:${port}`);
-});
+  console.log(`Server is running http://localhost:${port}`)
+})
