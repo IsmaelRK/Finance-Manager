@@ -12,6 +12,22 @@ html {
     background-color: #131e28;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    flex-direction: row;
+}
+
+#Finance-Viewer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #totalInput {
 
     background: none;
@@ -32,7 +48,7 @@ html {
     margin: 2rem 0 1rem 0;
 
     height: 4rem;
-    width: 9rem;
+    width: 12rem;
 
     background-color: #000000B5;
     border-radius: 8px;
@@ -46,19 +62,55 @@ html {
     margin: 0 0 1rem 0;
 }
 
-#main-select {
+#transactions-div {
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#transactions-adder {
+    display: flex;
+}
+
+#trash-svg {
+    cursor: pointer;
+
+    width: 1.2rem;
+    height: 1.2rem;
+
+    margin: 0.1rem 0 0 0.5rem;
+}
+
+#add-svg {
+    cursor: pointer;
+
+    width: 1.2rem;
+    height: 1.2rem;
+
+    margin: 0.1rem 0 0 0.5rem;
+}
+
+.main-transaction-amount-class {
+    background: none;
+    border: none;
+
+    width: 8rem;
+
+    border-bottom: 1px solid #1e94fd;
+    text-align: center;
+
+    margin: 0 0 0.7rem 0;
+
+}
+
+.main-select-class {
     border: none;
     border-bottom: 1px solid;
 
     background-color: #131e28;
+    margin: 0 0 0.7rem 0;
 }
 
-.Finance-Viewer {
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-}
 
 .white-font {
     color: #FFFFFFCC;
