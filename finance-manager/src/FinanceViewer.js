@@ -90,7 +90,7 @@ function FinanceViewer() {
         setInputType(event.target.value)
     }
 
-    const handleTransactionTypeChange = (event, index, id) => {
+    const handleTransactionChanges = (event, index, id) => {
 
         const updatedTransactions = [...transactions]
         const newValue = event.target.value
@@ -210,7 +210,7 @@ function FinanceViewer() {
             <ul>
                 {transactions.map((transaction, index) => (
                     <li key={index}>
-                        <select id="transaction-type" value={transaction.type} onChange={(e) => handleTransactionTypeChange(e, index, transaction.id)}>
+                        <select id="transaction-type" value={transaction.type} onChange={(e) => handleTransactionChanges(e, index, transaction.id)}>
                             <option value="received">Received</option>
                             <option value="spent">Spent</option>
                         </select>
@@ -219,7 +219,7 @@ function FinanceViewer() {
                             id="transaction-amount"
                             type="number"
                             value={transaction.value}
-                            onChange={(e) => handleTransactionTypeChange(e, index, transaction.id)}
+                            onChange={(e) => handleTransactionChanges(e, index, transaction.id)}
 
                         />
 
