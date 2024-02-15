@@ -21,28 +21,35 @@ function FinanceViewer() {
             .catch(error => console.error('Error fetching total:', error))
     }
 
+
+    const fetchCurrentBalance = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/get-subtotal');
+            if (!response.ok) {
+                throw new Error('Failed to fetch subtotal');
+            }
+            const data = await response.json();
+            setCurrentBalance(data.subtotal);
+        } catch (error) {
+            console.error('Error fetching subtotal:', error);
+        }
+    }
+
+
     const fetchTransactions = () => {
         fetch('http://localhost:3001/transactions')
             .then(response => response.json())
             .then(data => {
                 setTransactions(data)
-                let balance = total
-                data.forEach(transaction => {
-                    if (transaction.type === 'received') {
-                        balance += transaction.value
-                    } else {
-                        balance -= transaction.value
-                    }
-                })
-                setCurrentBalance(balance)
             })
             .catch(error => console.error('Error fetching transactions:', error))
     }
 
     useEffect(() => {
+        fetchCurrentBalance()
         fetchTotal()
         fetchTransactions()
-    }, [total, currentBalance])
+    }, [currentBalance, total])
 
     const totalBalanceUpdate = (event) => {
         const newValue = parseFloat(event.target.value)
@@ -62,7 +69,8 @@ function FinanceViewer() {
             })
             .then(data => {
                 console.log(data)
-                fetchTransactions()
+                fetchCurrentBalance()
+
             })
             .catch(error => {
                 console.error('Error sending value to server:', error)
@@ -99,6 +107,7 @@ function FinanceViewer() {
                 }
                 setInputValueReceived('')
                 setInputValueSpent('')
+                fetchCurrentBalance()
                 fetchTransactions()
             })
             .catch(error => console.error('Error adding transaction:', error))
@@ -112,6 +121,7 @@ function FinanceViewer() {
                 if (!response.ok) {
                     throw new Error('Error deleting transaction')
                 }
+                fetchCurrentBalance()
                 fetchTransactions()
             })
             .catch(error => console.error('Error deleting transaction:', error))
