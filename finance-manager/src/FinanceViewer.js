@@ -184,6 +184,7 @@ function FinanceViewer() {
                 <input
                     type="number"
                     id="totalInput"
+                    className="white-font"
                     value={total}
                     onChange={totalBalanceUpdate}
                 />
@@ -204,7 +205,7 @@ function FinanceViewer() {
                     </select>
                     <input
                         type="number"
-                        className="main-transaction-amount-class"
+                        className="main-transaction-amount-class white-font"
                         value={inputType === 'received' ? inputValueReceived : inputValueSpent}
                         onChange={inputType === 'received' ? handleInputChangeReceived : handleInputChangeSpent}
                     />
@@ -227,7 +228,7 @@ function FinanceViewer() {
                             </select>
 
                             <input
-                                className="main-transaction-amount-class"
+                                className="main-transaction-amount-class white-font"
                                 type="number"
                                 value={transaction.value}
                                 onChange={(e) => handleTransactionChanges(e, index, transaction.id)}
