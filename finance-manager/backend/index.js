@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 const db = new sqlite3.Database(':memory')
 db.serialize(() => {
-  db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, amount REAL)');
+  db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, value REAL)');
   db.run('CREATE TABLE IF NOT EXISTS balance (id INTEGER PRIMARY KEY, total REAL);');
 
   try {
@@ -60,9 +60,52 @@ app.post('/update-total', (req, res) => {
     }
 
   })
+})
 
+app.get('/get-total', (req, res) => {
+
+  const getTotalQuery = 'SELECT total FROM balance WHERE id = 1'
+  db.get(getTotalQuery, function (err, total) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(total)
+  })
 
 })
+
+app.post('/transactions', (req, res) => {
+  const { type, value } = req.body;
+  db.run("INSERT INTO transactions (type, value) VALUES (?, ?)", [type, value], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({
+      id: this.lastID,
+      type,
+      value
+    });
+  });
+});
+
+app.get('/transactions', (req, res) => {
+  db.all("SELECT * FROM transactions", (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows);
+  });
+});
+
+app.delete('/transactions/:id', (req, res) => {
+  const id = req.params.id;
+  db.run("DELETE FROM transactions WHERE id = ?", id, function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: `Transação ${id} deletada com sucesso` });
+  });
+});
 
 
 app.listen(port, () => {
