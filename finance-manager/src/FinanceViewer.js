@@ -10,6 +10,7 @@ function FinanceViewer() {
     const [inputValueReceived, setInputValueReceived] = useState('')
     const [inputValueSpent, setInputValueSpent] = useState('')
 
+
     const fetchTotal = () => {
         fetch('http://localhost:3001/get-total')
             .then(response => response.json())
@@ -89,13 +90,39 @@ function FinanceViewer() {
         setInputType(event.target.value)
     }
 
+    const handleTransactionTypeChange = (event, index, id) => {
+        const newType = event.target.value
+        const updatedTransactions = [...transactions]
+        updatedTransactions[index].type = newType
+        setTransactions(updatedTransactions)
+
+        const newValue = updatedTransactions[index].value
+
+        fetch(`http://localhost:3001/transactions/${id}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify({
+                type: newType,
+                value: newValue
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Transaction Update Failed")
+                }
+                console.log("Update Successful")
+                fetchCurrentBalance()
+                fetchTransactions()
+            })
+            .catch(error => console.error('Transaction Update Failed: ', error))
+
+    };
+
     const handleAddTransaction = () => {
         const inputValue = inputType === 'received' ? inputValueReceived : inputValueSpent
         fetch('http://localhost:3001/transactions', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: {'Content-Type': 'application/json',},
             body: JSON.stringify({
                 type: inputType,
                 value: parseFloat(inputValue)
@@ -165,7 +192,11 @@ function FinanceViewer() {
             <ul>
                 {transactions.map((transaction, index) => (
                     <li key={index}>
-                        {transaction.type === 'received' ? 'Received' : 'Spent'}: {transaction.value}
+                        <select value={transaction.type} onChange={(e) => handleTransactionTypeChange(e, index, transaction.id)}>
+                            <option value="received">Received</option>
+                            <option value="spent">Spent</option>
+                        </select>
+                        : {transaction.value}
                         <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
                     </li>
                 ))}

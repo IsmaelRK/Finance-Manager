@@ -108,6 +108,25 @@ app.get('/get-subtotal', (req, res) => {
 
 })
 
+app.put('/transactions/:id', (req, res) => {
+
+  const { id } = req.params
+  const { type, value } = req.body
+
+  const updateTransactionQuery = 'UPDATE transactions SET type = ?, value = ? WHERE id = ?'
+  db.run(updateTransactionQuery, [type, value, id], (err) => {
+
+    if (err) {
+      console.error('Error updating transaction', err)
+      return res.status(500).json({error: "Error updating transaction"})
+    }
+    calculateSubtotal()
+    res.json({ message: `Transactions ${id} successfully updated` })
+
+  })
+
+})
+
 app.post('/update-total', (req, res) => {
 
   const newTotal = req.body.total
