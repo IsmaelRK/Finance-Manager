@@ -1,49 +1,28 @@
 const express = require('express');
 const cors = require('cors')
 const sqlite3 = require('sqlite3').verbose()
-
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3001;
 
 app.use(cors())
 app.use(express.json())
+app.use(bodyParser.json());
+
 
 const db = new sqlite3.Database(':memory')
 db.serialize(() => {
-  db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, amount REAL)')
+  db.run('CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, amount REAL)');
+  db.run('CREATE TABLE IF NOT EXISTS balance (id INTEGER PRIMARY KEY, total REAL)');
 })
 
-app.get('/transactions', (req, res) => {
-  console.log("get /transactions")
+app.post('/update-total', (req, res) => {
 
-  db.all('SELECT * FROM transactions', (err, rows) => {
+  const { total } = req.body
 
-    if (err) {
-      res.status(500).send("Get Trasactions Database Error")
-    }
-    else {
-      res.json(rows)
-    }
 
-  })
 
-})
-
-app.post('/transactions', (req, res) => {
-  console.log("post /transactions")
-
-  const {type, amount} = req.body
-
-  db.run('INSERT INTO transactions (type, amount) VALUES (?, ?)', [type, amount], function (err) {
-
-    if (err) {
-      res.status(500).send("POST Trasactions Database Error")
-    }
-    else {
-      res.json({id: this.lastID})
-    }
-
-  })
+  res.json({message: "Received"})
 
 })
 
