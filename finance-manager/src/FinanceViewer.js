@@ -53,6 +53,7 @@ function FinanceViewer() {
     }, [currentBalance, total])
 
     const totalBalanceUpdate = (event) => {
+
         const newValue = parseFloat(event.target.value)
         setTotal(newValue)
         fetch(`http://localhost:3001/update-total/${newValue}`, {
