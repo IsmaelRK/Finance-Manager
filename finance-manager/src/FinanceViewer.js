@@ -60,7 +60,6 @@ function FinanceViewer() {
             headers: {
                 'Content-Type': 'application/json',
             }
-            // body: JSON.stringify({ total: newValue }),
         })
             .then(response => {
                 if (!response.ok) {

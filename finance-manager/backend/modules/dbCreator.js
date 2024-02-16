@@ -29,7 +29,6 @@ function initDatabase() {
     }
     catch (error) {console.error("Error building database")}
 
-
 }
 
 module.exports = {initDatabase}

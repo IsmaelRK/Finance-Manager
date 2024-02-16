@@ -4,18 +4,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3001
 
-
 const {initDatabase} = require('./modules/dbCreator')
-
-const {getSubtotalFromDb} = require('./modules/routeModules/getSubtotalFromDb')
-const {getTotalFromDb} = require('./modules/routeModules/getTotalFromDb')
-const {updateTotalOnDb} = require('./modules/routeModules/updateTotalOnDb')
-
-const {createTransaction} = require('./modules/routeModules/createTransaction')
-const {getTransactionsFromDb} = require('./modules/routeModules/getTransactionsFromDb')
-const {updateTransaction} = require('./modules/routeModules/updateTransaction')
-const {deleteTransaction} = require('./modules/routeModules/deleteTransaction')
-
 const {buildRoutes} = require('./modules/routes')
 
 app.use(cors())
