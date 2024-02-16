@@ -1,21 +1,29 @@
 const {calculateSubtotal} = require("../calculateSubtotal");
+const {initDatabase} = require("../dbCreator");
 
-function updateTransaction (db, req, res) {
+function updateTransaction (req, res) {
+
+    const db = initDatabase()
 
     const { id } = req.params
     const { type, value } = req.body
-
     const updateTransactionQuery = 'UPDATE transactions SET type = ?, value = ? WHERE id = ?'
-    db.run(updateTransactionQuery, [type, value, id], (err) => {
 
-        if (err) {
-            console.error('Error updating transaction', err)
-            return res.status(500).json({error: "Error updating transaction"})
-        }
-        calculateSubtotal(db)
-        res.json({ message: `Transactions ${id} successfully updated` })
+    try {
+        db.run(updateTransactionQuery, [type, value, id], (err) => {
 
-    })
+            if (err) {throw err}
+
+            calculateSubtotal()
+            res.json({ message: `Transactions ${id} successfully updated` })
+
+        })
+
+    } catch (error) {
+        return res.status(500).json({error: "Error updating transaction"})
+    } finally {
+        db.close()
+    }
 
 }
 

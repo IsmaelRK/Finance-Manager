@@ -1,24 +1,31 @@
 const {calculateSubtotal} = require("../calculateSubtotal");
+const {initDatabase} = require("../dbCreator");
 
-function updateTotalOnDb(db, req, res) {
+function updateTotalOnDb(req, res) {
+
     const { total } = req.params
-    
-    
     const totalUpdateQuery = 'UPDATE balance set total = ? WHERE id = 1'
-    db.run(totalUpdateQuery, [total], function (error) {
 
-        if (error) {
-            console.error('Error updating total value in balance table:', error.message)
-            res.status(500).json({ error: 'Error updating total value in balance table' })
-        }
-        else {
-            calculateSubtotal(db)
-            res.json({ message: 'Total value updated successfully in balance table' })
-            console.log('Total value updated successfully in balance table.')
+    const db = initDatabase()
 
-        }
+    try {
+        db.run(totalUpdateQuery, [total], function (err) {
 
-    })
+            if (err) {throw err}
+            else {
+                calculateSubtotal()
+                res.json({ message: 'Total value updated successfully in balance table' })
+                console.log('Total value updated successfully in balance table.')
+
+            }
+        })
+
+    } catch (error) {
+        res.status(500).json({ error: 'Error updating total value in balance table' })
+    } finally {
+        db.close()
+    }
+
 }
 
 module.exports = {updateTotalOnDb}

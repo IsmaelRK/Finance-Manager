@@ -1,11 +1,21 @@
-function getTransactionsFromDb (db, req, res) {
+const {initDatabase} = require("../dbCreator");
 
-    db.all("SELECT * FROM transactions", (err, rows) => {
-        if (err) {
-            return res.status(500).json({ error: err.message })
-        }
-        res.json(rows)
-    })
+function getTransactionsFromDb (req, res) {
+
+    const db = initDatabase()
+    const selectTransactionsQuery = 'SELECT * FROM transactions'
+
+    try {
+        db.all(selectTransactionsQuery, (err, rows) => {
+            if (err) {throw err}
+            res.json(rows)
+        })
+
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    } finally {
+        db.close()
+    }
 
 }
 

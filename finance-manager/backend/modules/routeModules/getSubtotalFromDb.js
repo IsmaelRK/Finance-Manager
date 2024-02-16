@@ -1,16 +1,23 @@
-function getSubtotalFromDb(db, req, res) {
+const {initDatabase} = require("../dbCreator");
+
+function getSubtotalFromDb(req, res) {
 
     const getSubtotalQuery = 'SELECT subtotal from current_balance WHERE id = 1'
-    db.get(getSubtotalQuery, (err, subtotal) => {
+    const db = initDatabase()
 
-        if (err){
-            console.error("Error ", err)
-            res.status(500).json({ error: 'Error updating total value in balance table' })
-        } else {
+    try {
+
+        db.get(getSubtotalQuery, (err, subtotal) => {
+
+            if (err){throw err}
             res.json(subtotal)
-        }
+        })
 
-    })
+    } catch (error) {
+        res.status(500).json({ error: 'Error updating total value in balance table' })
+    } finally {
+        db.close()
+    }
 
 }
 

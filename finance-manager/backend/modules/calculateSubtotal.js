@@ -1,13 +1,20 @@
-function calculateSubtotal(db) {
+const {initDatabase} = require("./dbCreator");
+
+function calculateSubtotal() {
+
+    const db = initDatabase()
+
 
     const totalGetQuery = 'SELECT total from balance WHERE id = 1'
     const transactionsGetQuery = 'SELECT * from transactions'
     const updateSubtotalQuery = 'UPDATE current_balance SET subtotal = ? WHERE id = 1'
 
-    db.get(totalGetQuery, (err, total) => {
-        if (!err) {
+    try {
+        db.get(totalGetQuery, (err, total) => {
+            if (err) {throw err}
 
             db.all(transactionsGetQuery, (err, transactions) => {
+                if (err) {throw err}
 
                 let subtotal = total.total
                 transactions.forEach(transaction => {
@@ -21,19 +28,19 @@ function calculateSubtotal(db) {
                 })
 
                 db.run(updateSubtotalQuery, [subtotal], (err) => {
-
-                    if (err) {
-                        console.error("Error updating subtotal")
-                    }
-
+                    if (err) {throw err}
                 })
 
             })
 
-        } else {
-            console.error("Error getting total")
-        }
-    })
+        })
+    } catch (error) {
+        console.error("Error getting total")
+    } finally {
+        db.close()
+    }
+
+
 }
 
 module.exports = {calculateSubtotal}
