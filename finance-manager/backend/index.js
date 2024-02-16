@@ -5,10 +5,14 @@ const app = express()
 const port = 3001
 
 const {buildRoutes} = require('./modules/routes')
+const {initDatabase} = require("./modules/dbCreator");
 
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
+
+const db = initDatabase()
+db.close()
 
 
 const routesToBuild = buildRoutes()
@@ -31,5 +35,5 @@ routesToBuild.forEach(route => {
 
 
 app.listen(port, () => {
-  console.log(`Server is running at: http://localhost:${port}`)
+  console.log(`Server is running at -> http://localhost:${port}`)
 })

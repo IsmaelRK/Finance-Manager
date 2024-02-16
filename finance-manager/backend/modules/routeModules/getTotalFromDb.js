@@ -1,24 +1,18 @@
 const {initDatabase} = require("../dbCreator");
 
 function getTotalFromDb (req, res) {
-
     const db = initDatabase()
 
-    try {
 
-        const getTotalQuery = 'SELECT total FROM balance WHERE id = 1'
-        db.get(getTotalQuery, function (err, total) {
+    const getTotalQuery = 'SELECT total FROM balance WHERE id = 1'
+    db.get(getTotalQuery, function (err, total) {
 
-            if (err) {throw err}
-            res.json(total)
-        })
+        if (err) {db.close(); return res.status(500).json({ error: "Get total failed" })}
 
-    } catch (error) {
-        return res.status(500).json({ error: error.message })
-
-    } finally {
+        res.json(total)
         db.close()
-    }
+
+    })
 
 }
 

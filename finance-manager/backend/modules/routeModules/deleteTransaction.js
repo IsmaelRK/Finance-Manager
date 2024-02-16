@@ -8,19 +8,13 @@ function deleteTransaction(req, res) {
     const id = req.params.id
     const deleteTransactionQuery = 'DELETE FROM transactions WHERE id = ?'
 
-    try {
-        db.run(deleteTransactionQuery, id, function(err) {
-            if (err) {throw err}
+    db.run(deleteTransactionQuery, id, function(err) {
+        if (err) {db.close(); return res.status(500).json({ error: "Delete Transaction Failed" })}
 
-            calculateSubtotal()
-            res.json({ message: `Transaction ${id} deleted successfully` })
-        })
-    } catch (error) {
-        return res.status(500).json({ error: error.message })
-    } finally {
+        calculateSubtotal()
+        res.json({ message: `Transaction ${id} deleted successfully` })
         db.close()
-    }
-
+    })
 
 }
 

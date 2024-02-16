@@ -7,23 +7,20 @@ function createTransaction(req, res) {
     const { type, value } = req.body
 
     const insertTransactionQuery= 'INSERT INTO transactions (type, value) VALUES (?, ?)'
+    db.run(insertTransactionQuery, [type, value], function(err) {
 
-    try {
-        db.run(insertTransactionQuery, [type, value], function(err) {
-            if (err) {throw err}
+        if (err) {db.close(); return res.status(500).json({ error: "Insert Transaction Failed" })}
 
-            calculateSubtotal()
-            res.json({
-                id: this.lastID,
-                type,
-                value
-            })
+        calculateSubtotal()
+        res.json({
+            id: this.lastID,
+            type,
+            value
         })
-    } catch (error) {
-        return res.status(500).json({ error: error.message })
-    } finally {
+
         db.close()
-    }
+    })
+
 
 }
 

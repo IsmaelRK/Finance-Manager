@@ -8,23 +8,18 @@ function updateTotalOnDb(req, res) {
 
     const db = initDatabase()
 
-    try {
-        db.run(totalUpdateQuery, [total], function (err) {
+    db.run(totalUpdateQuery, [total], function (err) {
 
-            if (err) {throw err}
-            else {
-                calculateSubtotal()
-                res.json({ message: 'Total value updated successfully in balance table' })
-                console.log('Total value updated successfully in balance table.')
+        if (err) {db.close(); return res.status(500).json({ error: "Total update failed" })}
+        else {
+            calculateSubtotal()
+            res.json({ message: 'Total value updated successfully in balance table' })
+            console.log('Total value updated successfully in balance table.')
 
-            }
-        })
+        }
 
-    } catch (error) {
-        res.status(500).json({ error: 'Error updating total value in balance table' })
-    } finally {
         db.close()
-    }
+    })
 
 }
 

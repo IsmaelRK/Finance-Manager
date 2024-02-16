@@ -9,21 +9,16 @@ function updateTransaction (req, res) {
     const { type, value } = req.body
     const updateTransactionQuery = 'UPDATE transactions SET type = ?, value = ? WHERE id = ?'
 
-    try {
-        db.run(updateTransactionQuery, [type, value, id], (err) => {
 
-            if (err) {throw err}
+    db.run(updateTransactionQuery, [type, value, id], (err) => {
 
-            calculateSubtotal()
-            res.json({ message: `Transactions ${id} successfully updated` })
+        if (err) {db.close(); return res.status(500).json({error: "Transaction update failed"})}
 
-        })
+        calculateSubtotal()
 
-    } catch (error) {
-        return res.status(500).json({error: "Error updating transaction"})
-    } finally {
+        res.json({ message: `Transactions ${id} successfully updated` })
         db.close()
-    }
+    })
 
 }
 
