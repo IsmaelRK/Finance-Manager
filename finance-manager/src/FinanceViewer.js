@@ -55,12 +55,12 @@ function FinanceViewer() {
     const totalBalanceUpdate = (event) => {
         const newValue = parseFloat(event.target.value)
         setTotal(newValue)
-        fetch('http://localhost:3001/update-total', {
-            method: 'POST',
+        fetch(`http://localhost:3001/update-total/${newValue}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ total: newValue }),
+            }
+            // body: JSON.stringify({ total: newValue }),
         })
             .then(response => {
                 if (!response.ok) {
