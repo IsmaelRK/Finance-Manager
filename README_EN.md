@@ -31,7 +31,7 @@ This is my first project with React and Node JS, representing my first foray int
 2. Navigate to the project root:
 
     ```shell
-   cd finance-manager
+   cd Finance-Manager/finance-manager/
    ```
 
 3. Install dependencies:

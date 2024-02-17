@@ -39,7 +39,7 @@ Este é meu primeiro projeto com React e Node JS, representando minha primeira i
 2. Navegue até a raiz do projeto:
     
    ```shell
-   cd finance-manager
+   cd Finance-Manager/finance-manager/
    ```
    
 3. Instale as dependências:
