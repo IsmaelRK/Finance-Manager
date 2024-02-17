@@ -6,7 +6,7 @@
 ![Static Badge NPM](https://img.shields.io/badge/Npm--red)
 ![Static Badge Under MIT License](https://img.shields.io/badge/MIT--green)
 
-![Imagem da Aplicação](./readme-img/app-image.jpg)
+![Imagem da Aplicação](./readme-img/appImage.jpg)
 
 ## Objetivo do projeto
 Criar uma aplicação gerenciadora de finanças com React e Node JS, 
