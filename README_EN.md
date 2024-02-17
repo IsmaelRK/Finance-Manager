@@ -60,7 +60,7 @@ This should start the backend on port 3001, if necessary, it can be changed on l
 > 
 > If it's your first time starting the backend, the SQLite database will be generated.
 > 
-> You should receive a log message in your terminal saying ```Database successfully built!_```
+> You should receive a log message in your terminal saying ```Database successfully built!```
 
 
 ### Starting the UI with React
