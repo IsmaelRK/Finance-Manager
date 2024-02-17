@@ -8,7 +8,6 @@
 
 ![Imagem da Aplicação](./readme-img/app-image.jpg)
 
-
 ## Objetivo do projeto
 Criar uma aplicação gerenciadora de finanças com React e Node JS, 
 a qual recebe um valor total mensal, despesas e lucros, que se tratam das transações.
