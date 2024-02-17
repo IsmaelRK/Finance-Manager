@@ -132,6 +132,9 @@ You can check the association of functions with their respective routes, in addi
 
 - Delay in inputs, possibly occurs due to the time bottleneck between the action and some response from the database.
 
+> Note: Both errors do not occur on a machine with less performance than the development machine
+
+
 ## License
 
     > MIT
