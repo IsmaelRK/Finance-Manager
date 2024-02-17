@@ -1,5 +1,5 @@
 import React from "react";
-import './FinanceViewer.css'
+import './FinanceViewerContent.css'
 
 function FinanceViewerContent ({
    total,
