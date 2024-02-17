@@ -20,7 +20,7 @@ Create a finance management application with React and Node JS, which receives a
 This is my first project with React and Node JS, representing my first foray into using these technologies. It was very useful for building new knowledge and improving existing ones.
 
 ## Installation
-* Make sure you have <a href="https://Node JS.org/en/download">Node JS</a> installed.
+* Make sure you have <a href="https://nodejs.org/en">Node JS</a> installed.
 
 1. Clone the repository:
 
