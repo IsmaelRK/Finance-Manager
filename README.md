@@ -28,7 +28,7 @@ Este é meu primeiro projeto com React e Node JS, representando minha primeira i
 
 ## Instalação
 
-* Assegure-se que tenha o <a href="https://nodejs.org/en">Node JS</a> instalado.
+* Assegure-se que tenha o <a target="_blank" href="https://nodejs.org/en">Node JS</a> instalado.
 
 1. Clone o repositório:
 
