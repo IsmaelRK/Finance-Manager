@@ -147,8 +147,7 @@ Este é meu primeiro projeto com React e Node JS, representando minha primeira i
 
    - Delay nas inputs, possívelmente ocorre pelo gargalo de tempo entre a ação e alguma resposta do banco de dados.
 
-   > Nota: Ambôs os erros não tiveram ocorrência registrada em uma máquina de capacidade inferior, se comparada
-   > á de desenvolvimento 
+   > Nota: Ambos os erros não foram registrados em uma máquina de capacidade inferior, quando comparada à de desenvolvimento.
 
 ## Licença
 
