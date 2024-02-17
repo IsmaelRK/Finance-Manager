@@ -13,38 +13,55 @@ function FinanceViewer() {
 
     const fetchTotal = () => {
         fetch('http://localhost:3001/get-total')
-            .then(response => response.json())
-            .then(data => {
-                setTotal(data.total)
-                setInputValueReceived('')
-                setInputValueSpent('')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch total');
+                }
+                return response.json();
             })
-            .catch(error => console.error('Error fetching total:', error))
-    }
+            .then(data => {
+                setTotal(data.total);
+                setInputValueReceived('');
+                setInputValueSpent('');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
 
-
-    const fetchCurrentBalance = async () => {
-        try {
-            const response = await fetch('http://localhost:3001/get-subtotal');
-            if (!response.ok) {
-                throw new Error('Failed to fetch subtotal');
-            }
-            const data = await response.json();
-            setCurrentBalance(data.subtotal);
-        } catch (error) {
-            console.error('Error fetching subtotal:', error);
-        }
-    }
-
+    const fetchCurrentBalance = () => {
+        fetch('http://localhost:3001/get-subtotal')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch subtotal');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setCurrentBalance(data.subtotal);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
 
     const fetchTransactions = () => {
         fetch('http://localhost:3001/transactions')
-            .then(response => response.json())
-            .then(data => {
-                setTransactions(data)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch transactions');
+                }
+                return response.json();
             })
-            .catch(error => console.error('Error fetching transactions:', error))
-    }
+            .then(data => {
+                setTransactions(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
+
+
 
     useEffect(() => {
         fetchCurrentBalance()
