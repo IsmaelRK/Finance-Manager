@@ -33,7 +33,7 @@ Este é meu primeiro projeto com React e Node JS, representando minha primeira i
 1. Clone o repositório:
 
     ```shell
-    https://github.com/IsmaelRK/Finance-Manager.git
+    git clone https://github.com/IsmaelRK/Finance-Manager.git
     ```
 
 2. Navegue até a raiz do projeto:

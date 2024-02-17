@@ -25,7 +25,7 @@ This is my first project with React and Node JS, representing my first foray int
 1. Clone the repository:
 
     ```shell
-    https://github.com/IsmaelRK/Finance-Manager.git
+    git clone https://github.com/IsmaelRK/Finance-Manager.git
     ```
    
 2. Navigate to the project root:
