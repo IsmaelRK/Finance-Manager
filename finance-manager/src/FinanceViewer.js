@@ -15,51 +15,51 @@ function FinanceViewer() {
         fetch('http://localhost:3001/get-total')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to fetch total');
+                    throw new Error('Failed to fetch total')
                 }
-                return response.json();
+                return response.json()
             })
             .then(data => {
-                setTotal(data.total);
-                setInputValueReceived('');
-                setInputValueSpent('');
+                setTotal(data.total)
+                setInputValueReceived('')
+                setInputValueSpent('')
             })
             .catch(error => {
-                console.error(error);
-            });
-    };
+                console.error(error)
+            })
+    }
 
     const fetchCurrentBalance = () => {
         fetch('http://localhost:3001/get-subtotal')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to fetch subtotal');
+                    throw new Error('Failed to fetch subtotal')
                 }
-                return response.json();
+                return response.json()
             })
             .then(data => {
-                setCurrentBalance(data.subtotal);
+                setCurrentBalance(data.subtotal)
             })
             .catch(error => {
-                console.error(error);
-            });
-    };
+                console.error(error)
+            })
+    }
 
     const fetchTransactions = () => {
         fetch('http://localhost:3001/transactions')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to fetch transactions');
+                    throw new Error('Failed to fetch transactions')
                 }
-                return response.json();
+                return response.json()
             })
             .then(data => {
-                setTransactions(data);
+                setTransactions(data)
             })
             .catch(error => {
-                console.error(error);
-            });
-    };
+                console.error(error)
+            })
+    }
 
 
 
@@ -150,7 +150,7 @@ function FinanceViewer() {
                 fetchTransactions()
             })
             .catch(error => console.error('Transaction Update Failed: ', error))
-    };
+    }
 
 
     const handleAddTransaction = () => {
