@@ -1,10 +1,14 @@
 # Finance-Manager
 
+[Change to Brazilian Portuguese](./README.md)
+
 ![Static Badge Node JS](https://img.shields.io/badge/Node--green)
 ![Static Badge React](https://img.shields.io/badge/React--blue)
 ![Static Badge Javascript](https://img.shields.io/badge/JS--yellow)
 ![Static Badge NPM](https://img.shields.io/badge/Npm--red)
 ![Static Badge Under MIT License](https://img.shields.io/badge/MIT--green)
+![Static Badge](https://img.shields.io/badge/English--darkblue)
+![Static Badge](https://img.shields.io/badge/Portugu%C3%AAs_BR--green)
 
 ![Application image](./readme-img/appImage.jpg)
 
