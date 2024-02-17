@@ -22,11 +22,11 @@ Este é meu primeiro projeto com React e Node JS, representando minha primeira i
 
 ## Instalação
 
-* Assegure-se que tenha o <a href="https://Node JS.org/en/download">node</a> instalado.
+* Assegure-se que tenha o <a href="https://Node JS.org/en/download">Node JS</a> instalado.
 
 1. Clone o repositório:
 
-    ```
+    ```shell
     https://github.com/IsmaelRK/Finance-Manager.git
     ```
 
